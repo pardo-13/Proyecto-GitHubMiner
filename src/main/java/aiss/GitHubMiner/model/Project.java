@@ -1,4 +1,4 @@
-package aiss.GitHubMiner.model.project;
+package aiss.GitHubMiner.model;
 
 import aiss.GitHubMiner.model.issue.Issue;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,6 +19,9 @@ public class Project {
 
     @JsonProperty("issues")
     private List<Issue> issues;
+
+    @JsonProperty("commits")
+    private List<Commit> commits;
 
     public Project() {
         issues = new ArrayList<>();
@@ -54,6 +57,13 @@ public class Project {
 
     public void setIssues(List<Issue> issues) {
         this.issues = issues;
+    }
+
+    public List<Commit> getCommits() {
+        return commits;
+    }
+    public void setCommits(List<Commit> commits) {
+        this.commits = commits;
     }
 
     @Override

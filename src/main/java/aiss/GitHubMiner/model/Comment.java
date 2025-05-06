@@ -1,7 +1,7 @@
 
 package aiss.GitHubMiner.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import aiss.GitHubMiner.model.issue.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Comment {

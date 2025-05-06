@@ -1,7 +1,6 @@
 package aiss.GitHubMiner.model.issue;
 
-import aiss.GitHubMiner.model.issue.User;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import aiss.GitHubMiner.model.Comment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -10,13 +9,14 @@ public class Issue {
 
     @JsonProperty("id")
     private String id;
+    @JsonProperty("number")
+    private String number;
     @JsonProperty("title")
     private String title;
     @JsonProperty("body")
     private String description;
     @JsonProperty("state")
     private String state;
-
     @JsonProperty("created_at")
     private String createdAt;
     @JsonProperty("updated_at")
@@ -32,9 +32,15 @@ public class Issue {
     private User assignee;
     @JsonProperty("votes")
     private Integer votes;
+    @JsonProperty("comment")
+    private List<Comment> comments;
 
     public String getId() {
         return id;
+    }
+
+    public String getNumber() {
+        return number;
     }
 
     public void setId(String id) {
@@ -121,6 +127,12 @@ public class Issue {
         this.votes = votes;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
     @Override
     public String toString() {
@@ -172,6 +184,7 @@ public class Issue {
         sb.append(',');
         sb.append("comments");
         sb.append('=');
+        sb.append(((this.comments == null) ? "<null>" : this.comments));
         sb.append(',');
 
         if (sb.charAt((sb.length() - 1)) == ',') {

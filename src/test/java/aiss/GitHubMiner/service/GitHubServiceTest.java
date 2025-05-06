@@ -1,7 +1,10 @@
 package aiss.GitHubMiner.service;
 
+import aiss.GitHubMiner.model.Comment;
+import aiss.GitHubMiner.model.Commit;
 import aiss.GitHubMiner.model.issue.Issue;
-import aiss.GitHubMiner.model.project.Project;
+import aiss.GitHubMiner.model.Project;
+import org.hibernate.annotations.Comments;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,5 +36,18 @@ class GitHubServiceTest {
             );
         }
         System.out.println(issues.length);
+    }
+
+    @Test
+    void getCommits() {
+        Commit[] commits = gitHubService.getCommits(owner, repo,1,1);
+        assertNotNull(commits);
+    }
+
+    @Test
+    void getComment() {
+        Comment[] comments = gitHubService.getComment(owner,repo,"1");
+        System.out.println(comments.length);
+        assertNotNull(comments);
     }
 }
