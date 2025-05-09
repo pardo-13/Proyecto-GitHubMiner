@@ -1,6 +1,7 @@
-package aiss.GitHubMiner.model.issue;
+package aiss.GitHubMiner.model.DataModel.issue;
 
-import aiss.GitHubMiner.model.Comment;
+import aiss.GitHubMiner.model.DataModel.Comment;
+import aiss.GitHubMiner.model.DataModel.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -25,13 +26,13 @@ public class Issue {
     private String closedAt;
     @JsonProperty("labels")
     private List<Label> labels;
-    @JsonProperty("author")
+    @JsonProperty("user")
     //@NotEmpty(message = "The author of the issue cannot be empty")
     private User author;
     @JsonProperty("assignee")
     private User assignee;
-    @JsonProperty("votes")
-    private Integer votes;
+    @JsonProperty("reactions")
+    private Reactions reactions;
     @JsonProperty("comment")
     private List<Comment> comments;
 
@@ -119,12 +120,11 @@ public class Issue {
         this.assignee = assignee;
     }
 
-    public Integer getVotes() {
-        return votes;
+    public Reactions getReactions() {
+        return reactions;
     }
-
-    public void setVotes(Integer votes) {
-        this.votes = votes;
+    public void setReactions(Reactions reactions) {
+        this.reactions = reactions;
     }
 
     public List<Comment> getComments() {
@@ -180,7 +180,6 @@ public class Issue {
         sb.append(',');
         sb.append("votes");
         sb.append('=');
-        sb.append(((this.votes == null) ? "<null>" : this.votes));
         sb.append(',');
         sb.append("comments");
         sb.append('=');

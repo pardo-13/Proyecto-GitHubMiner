@@ -1,4 +1,4 @@
-package aiss.GitHubMiner.model.issue;
+package aiss.GitHubMiner.model.DataModel.issue;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

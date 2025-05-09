@@ -1,6 +1,7 @@
-package aiss.GitHubMiner.model;
+package aiss.GitHubMiner.model.DataModel;
 
-import aiss.GitHubMiner.model.issue.Issue;
+import aiss.GitHubMiner.model.DataModel.commit.Commit;
+import aiss.GitHubMiner.model.DataModel.issue.Issue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Project {
     @JsonProperty("name")
     public String name;
 
-    @JsonProperty("web_url")
+    @JsonProperty("url")
     public String webUrl;
 
     @JsonProperty("issues")

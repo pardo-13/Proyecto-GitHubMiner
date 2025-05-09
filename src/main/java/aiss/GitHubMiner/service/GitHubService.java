@@ -1,9 +1,10 @@
 package aiss.GitHubMiner.service;
 
-import aiss.GitHubMiner.model.Comment;
-import aiss.GitHubMiner.model.Commit;
-import aiss.GitHubMiner.model.issue.Issue;
-import aiss.GitHubMiner.model.Project;
+import aiss.GitHubMiner.model.DataModel.Comment;
+import aiss.GitHubMiner.model.DataModel.commit.Commit;
+import aiss.GitHubMiner.model.DataModel.commit.Commits;
+import aiss.GitHubMiner.model.DataModel.issue.Issue;
+import aiss.GitHubMiner.model.DataModel.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -50,7 +51,7 @@ public class GitHubService {
         return response.getBody();
     }
 
-    public Commit[] getCommits(String owner, String repo, Integer days, Integer page) {
+    public Commits[] getCommits(String owner, String repo, Integer days, Integer page) {
 
         LocalDateTime today = LocalDateTime.now();
         today = today.minusDays(days);
@@ -65,7 +66,7 @@ public class GitHubService {
         headers.set("Authorization", "Bearer " + token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<Commit[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, Commit[].class);
+        ResponseEntity<Commits[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, Commits[].class);
         return response.getBody();
     }
 

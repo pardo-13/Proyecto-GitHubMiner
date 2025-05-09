@@ -1,5 +1,5 @@
 
-package aiss.GitHubMiner.model.issue;
+package aiss.GitHubMiner.model.DataModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,13 +7,11 @@ public class User {
 
     @JsonProperty("id")
     private String id;
-    @JsonProperty("username")
+    @JsonProperty("login")
     private String username;
-    @JsonProperty("name")
-    private String name;
     @JsonProperty("avatar_url")
     private String avatarUrl;
-    @JsonProperty("web_url")
+    @JsonProperty("url")
     private String webUrl;
 
     public String getId() {
@@ -30,14 +28,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getAvatarUrl() {
@@ -70,7 +60,6 @@ public class User {
         sb.append(',');
         sb.append("name");
         sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
         sb.append(',');
         sb.append("avatarUrl");
         sb.append('=');

@@ -1,22 +1,45 @@
-package aiss.GitHubMiner.model;
+package aiss.GitHubMiner.model.GitMinerModel;
+
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Commit {
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.persistence.*;
 
+/*
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+*/
+@Entity
+@Table(name = "Commit")
+public class CommitGitMiner {
+
+    @Id
     @JsonProperty("id")
     private String id;
     @JsonProperty("title")
     private String title;
+
     @JsonProperty("message")
+    @Column(columnDefinition="TEXT")
     private String message;
     @JsonProperty("author_name")
+    @NotEmpty(message = "Author name cannot be empty.")
     private String authorName;
     @JsonProperty("author_email")
     private String authorEmail;
     @JsonProperty("authored_date")
+    @NotEmpty(message = "Author date cannot be empty.")
     private String authoredDate;
+
     @JsonProperty("web_url")
+    @NotEmpty(message = "URL cannot be empty." +
+            "")
     private String webUrl;
 
     public String getId() {
@@ -78,7 +101,7 @@ public class Commit {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Commit.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(CommitGitMiner.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
         sb.append(((this.id == null) ? "<null>" : this.id));

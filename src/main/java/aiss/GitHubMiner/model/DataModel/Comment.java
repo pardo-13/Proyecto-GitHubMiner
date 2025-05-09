@@ -1,7 +1,6 @@
 
-package aiss.GitHubMiner.model;
+package aiss.GitHubMiner.model.DataModel;
 
-import aiss.GitHubMiner.model.issue.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Comment {
@@ -11,7 +10,7 @@ public class Comment {
     private String id;
     @JsonProperty("body")
     private String body;
-    @JsonProperty("author")
+    @JsonProperty("user")
     private User author;
     @JsonProperty("created_at")
     private String createdAt;

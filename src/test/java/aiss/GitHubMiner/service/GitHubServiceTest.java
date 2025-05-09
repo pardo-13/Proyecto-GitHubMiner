@@ -1,10 +1,10 @@
 package aiss.GitHubMiner.service;
 
-import aiss.GitHubMiner.model.Comment;
-import aiss.GitHubMiner.model.Commit;
-import aiss.GitHubMiner.model.issue.Issue;
-import aiss.GitHubMiner.model.Project;
-import org.hibernate.annotations.Comments;
+import aiss.GitHubMiner.model.DataModel.Comment;
+import aiss.GitHubMiner.model.DataModel.commit.Commit;
+import aiss.GitHubMiner.model.DataModel.commit.Commits;
+import aiss.GitHubMiner.model.DataModel.issue.Issue;
+import aiss.GitHubMiner.model.DataModel.Project;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,14 +40,19 @@ class GitHubServiceTest {
 
     @Test
     void getCommits() {
-        Commit[] commits = gitHubService.getCommits(owner, repo,1,1);
+        Commits[] commits = gitHubService.getCommits(owner, repo,1,1);
         assertNotNull(commits);
+        for(Commits commit : commits){
+            System.out.println(commit.getCommit().getMessage());
+        }
     }
 
     @Test
     void getComment() {
-        Comment[] comments = gitHubService.getComment(owner,repo,"1");
-        System.out.println(comments.length);
+        Comment[] comments = gitHubService.getComment(owner,repo,"5");
+        for(Comment comment : comments){
+            System.out.println(comment.getAuthor().getUsername());
+        }
         assertNotNull(comments);
     }
 }
