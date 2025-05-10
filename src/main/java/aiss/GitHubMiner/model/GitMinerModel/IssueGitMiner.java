@@ -1,59 +1,30 @@
 package aiss.GitHubMiner.model.GitMinerModel;
 
+import aiss.GitHubMiner.model.DataModel.IssueData.User;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import jakarta.persistence.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
-/*
-import javax.annotation.Generated;
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-*/
 
-@Entity
-@Table(name = "Issue")
 public class IssueGitMiner {
 
-    @Id
-    @JsonProperty("id")
     private String id;
-    @JsonProperty("title")
     private String title;
-    @JsonProperty("description")
-    @Column(columnDefinition="TEXT")
     private String description;
-    @JsonProperty("state")
     private String state;
-
-    @JsonProperty("created_at")
     private String createdAt;
-    @JsonProperty("updated_at")
     private String updatedAt;
-    @JsonProperty("closed_at")
     private String closedAt;
-    @JsonProperty("labels")
-    @ElementCollection
     private List<String> labels;
-    @JsonProperty("author")
-    //@NotEmpty(message = "The author of the issue cannot be empty")
-    @JoinColumn(name = "author_id",referencedColumnName = "id")
-    @OneToOne(cascade=CascadeType.ALL)
     private UserGitMiner author;
-    @JsonProperty("assignee")
-    @JoinColumn(name = "assignee_id",referencedColumnName = "id")
-    @OneToOne(cascade=CascadeType.ALL)
     private UserGitMiner assignee;
-    @JsonProperty("votes")
     private Integer votes;
-    @JsonProperty("comments")
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "issueId")
     private List<CommentGitMiner> commentGitMiners;
+
+    public IssueGitMiner(){
+        this.labels = new ArrayList<>();
+        this.commentGitMiners = new ArrayList<>();
+    }
 
     public String getId() {
         return id;
@@ -147,8 +118,8 @@ public class IssueGitMiner {
         return commentGitMiners;
     }
 
-    public void setComments(List<CommentGitMiner> commentGitMiners) {
-        this.commentGitMiners = commentGitMiners;
+    public void setComments(List<CommentGitMiner> comments) {
+        this.commentGitMiners = comments;
     }
 
     @Override

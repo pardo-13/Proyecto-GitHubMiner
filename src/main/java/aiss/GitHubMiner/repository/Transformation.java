@@ -1,122 +1,115 @@
 package aiss.GitHubMiner.repository;
 
-
-
-import aiss.GitHubMiner.model.DataModel.Comment;
-import aiss.GitHubMiner.model.DataModel.Project;
-import aiss.GitHubMiner.model.DataModel.commit.Commits;
-import aiss.GitHubMiner.model.DataModel.issue.Issue;
-import aiss.GitHubMiner.model.DataModel.issue.Label;
-import aiss.GitHubMiner.model.DataModel.User;
-import aiss.GitHubMiner.model.DataModel.issue.Reactions;
+import aiss.GitHubMiner.model.DataModel.CommentData.CommentDatum;
+import aiss.GitHubMiner.model.DataModel.CommitData.CommitDatum;
+import aiss.GitHubMiner.model.DataModel.IssueData.IssueDatum;
+import aiss.GitHubMiner.model.DataModel.ProjectData;
+import aiss.GitHubMiner.model.DataModel.UserData;
 import aiss.GitHubMiner.model.GitMinerModel.*;
-import aiss.GitHubMiner.service.GitHubService;
+import aiss.GitHubMiner.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-    public class Transformation {
-        @Autowired
-        GitHubService gitHubService;
+@Repository
+public class Transformation {
 
-        public ProjectGitMiner transform(Project project, Issue[] issues, Commits[] commits, String owner, String repoName) {
-            //CREAMOS LAS LISTAS PARA CONVERTIR LOS ARRAYS EN LISTAS
-            List<CommitGitMiner> commitsList = new ArrayList<>();
-            List<IssueGitMiner> issueList = new ArrayList<>();
+    @Autowired
+    private ProjectService projectService;
+    @Autowired
+    private CommitService commitService;
+    @Autowired
+    private IssueService issueService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private UserService userService;
 
-
-            for(Issue issue : issues) { //RECORREMOS CADA ISSUE
-                String id = issue.getNumber(); //BUSCAMOS LOS COMENTARIOS DE CADA ISSUE
-                Comment[] comments = gitHubService.getComment(owner, repoName, id);
-                List<CommentGitMiner> commentList = new ArrayList<>();
-                //RECORREMOS LOS COMENTARIOS
-                for(Comment comment : comments){
-                    CommentGitMiner commentary = transformComment(comment);
-                    commentList.add(commentary);
-                }
-
-                //TRANSFORMAMOS LOS ISSUES
-                IssueGitMiner issueGitMiner = transformIssue(issue);
-                issueGitMiner.setComments(commentList);
-                issueList.add(issueGitMiner);
-            }
-
-            for(Commits commit: commits){
-                CommitGitMiner commitGitMiner = transformCommit(commit);
-                commitsList.add(commitGitMiner);
-            }
-
-
-            ProjectGitMiner projectGitMiner = new ProjectGitMiner();
-            projectGitMiner.setName(project.getName());
-            projectGitMiner.setWebUrl(project.getWebUrl());
-            projectGitMiner.setCommits(commitsList);
-            projectGitMiner.setIssues(issueList);
-            projectGitMiner.setId(project.getId());
-
-            return projectGitMiner;
-        }
-
-        public UserGitMiner transformUser(User user) {
-            UserGitMiner userGitMiner = new UserGitMiner();
-            //TRANSFORMARMOS EL USUARIO A LA CLASE DE GITMINER
-            userGitMiner.setUsername(user.getUsername());
-            userGitMiner.setAvatarUrl(user.getAvatarUrl());
-            userGitMiner.setWebUrl(user.getWebUrl());
-            userGitMiner.setId(user.getId());
-            return userGitMiner;
-        }
-
-        public CommentGitMiner transformComment(Comment comment) {
-            UserGitMiner autor = comment.getAuthor()!=null?transformUser(comment.getAuthor()):null;
-            CommentGitMiner commentGitMiner = new CommentGitMiner();
-            //TRANSFORMAMOS EL COMENTARIO
-            commentGitMiner.setAuthor(autor);
-            commentGitMiner.setBody(comment.getBody());
-            commentGitMiner.setCreatedAt(comment.getCreatedAt());
-            commentGitMiner.setUpdatedAt(comment.getUpdatedAt());
-            commentGitMiner.setId(comment.getId());
-            return commentGitMiner;
-        }
-
-        public IssueGitMiner transformIssue(Issue issue) {
-
-            List<String> newLabels = issue.getLabels().stream()
-                    .map(Label::getDescription)
-                    .collect(Collectors.toList());
-
-            UserGitMiner asigneee = issue.getAssignee()!=null? transformUser(issue.getAssignee()): null;
-            UserGitMiner autor = issue.getAuthor()!=null?transformUser(issue.getAuthor()):null;
-            IssueGitMiner issueGitMiner = new IssueGitMiner();
-            issueGitMiner.setClosedAt(issue.getClosedAt());
-            issueGitMiner.setCreatedAt(issue.getCreatedAt());
-            issueGitMiner.setUpdatedAt(issue.getUpdatedAt());
-            issueGitMiner.setTitle(issue.getTitle());
-            issueGitMiner.setAssignee(asigneee);
-            issueGitMiner.setDescription(issue.getDescription());
-            issueGitMiner.setLabels(newLabels);
-            issueGitMiner.setState(issue.getState());
-            issueGitMiner.setVotes(issue.getReactions().getTotalCount());
-            issueGitMiner.setAuthor(autor);
-            issueGitMiner.setId(issue.getId());
-
-            return issueGitMiner;
-        }
-
-        public CommitGitMiner transformCommit(Commits commit) {
-            CommitGitMiner commitGitMiner = new CommitGitMiner();
-            commitGitMiner.setAuthoredDate(commit.getCommit().getAuthor().getDate().toString());
-            commitGitMiner.setAuthorEmail(commit.getCommit().getAuthor().getEmail());
-            commitGitMiner.setAuthorName(commit.getCommit().getAuthor().getEmail());
-            commitGitMiner.setMessage(commit.getCommit().getMessage());
-            commitGitMiner.setTitle(commit.getCommit().getMessage());
-            commitGitMiner.setWebUrl(commit.getCommit().getUrl());
-            commitGitMiner.setId(commit.getSha());
-            return commitGitMiner;
-        }
+    //GET
+    public ProjectGitMiner getProject(String owner, String repo,
+                                      Integer sinceCommits, Integer sinceIssues, Integer maxPages ) {
+        ProjectGitMiner project = new ProjectGitMiner();
+        ProjectData data = projectService.getProject(owner, repo);
+        project.setId(data.getId().toString());
+        project.setName(data.getName());
+        project.setWebUrl(data.getHtmlUrl());
+        project.setCommits(getCommits(owner, repo, sinceCommits, maxPages));
+        project.setIssues(getIssues(owner, repo, sinceIssues, maxPages));
+        return project;
     }
 
+    private List<CommitGitMiner> getCommits(String owner, String repo, Integer sinceCommits, Integer maxPages) {
+        List<CommitGitMiner> commits = new ArrayList<>();
+        List<CommitDatum> datas = commitService.getCommits(owner, repo, sinceCommits, maxPages);
+        for (CommitDatum data : datas) {
+            CommitGitMiner commit = new CommitGitMiner();
+            commit.setId(data.getSha());
+            commit.setTitle("");
+            commit.setMessage(data.getCommit().getMessage());
+            commit.setAuthorName(data.getCommit().getAuthor().getName());
+            commit.setAuthorEmail(data.getCommit().getAuthor().getEmail());
+            commit.setAuthoredDate(data.getCommit().getAuthor().getDate());
+            commit.setWebUrl(data.getHtmlUrl());
+            commits.add(commit);
+        }
+        return commits;
+    }
+
+    private List<IssueGitMiner> getIssues(String owner, String repo, Integer sinceIssues, Integer maxPages) {
+        List<IssueGitMiner> issues = new ArrayList<>();
+        List<IssueDatum> datas = issueService.getIssues(owner, repo, sinceIssues, maxPages);
+        for (IssueDatum data : datas) {
+            IssueGitMiner issue = new IssueGitMiner();
+            issue.setId(data.getId().toString());
+            issue.setTitle(data.getTitle());
+            issue.setDescription(data.getBody());
+            issue.setState(data.getState());
+            issue.setCreatedAt(data.getCreatedAt());
+            issue.setUpdatedAt(data.getUpdatedAt());
+            issue.setClosedAt(data.getClosedAt());
+            issue.setLabels(data.getLabels().stream().map(l -> l.getName()).collect(Collectors.toList()));
+            issue.setVotes(data.getReactions().getTotalCount());
+            String user_url = data.getUser().getUrl();
+            if(user_url.contains("%5B")){
+                user_url = user_url.replace("%5B","[").replace("%5D","]");
+            }
+            issue.setAuthor(getUser(user_url));
+            if(data.getAssignee() != null) {
+                issue.setAssignee(getUser(data.getAssignee().getUrl()));
+            }
+            issue.setComments(getComments(data.getCommentsUrl()));
+            issues.add(issue);
+        }
+        return issues;
+    }
+
+    private UserGitMiner getUser(String url) {
+        UserGitMiner user = new UserGitMiner();
+        UserData data = userService.getUser(url);
+        user.setId(data.getId().toString());
+        user.setName(data.getName());
+        user.setUsername(data.getLogin());
+        user.setAvatarUrl(data.getAvatarUrl());
+        user.setWebUrl(data.getHtmlUrl());
+        return user;
+    }
+
+    private List<CommentGitMiner> getComments(String url) {
+        List<CommentGitMiner> comments = new ArrayList<>();
+        List<CommentDatum> datas = commentService.getComments(url);
+        for (CommentDatum data : datas) {
+            CommentGitMiner comment = new CommentGitMiner();
+            comment.setId(data.getId().toString());
+            comment.setBody(data.getBody());
+            comment.setCreatedAt(data.getCreatedAt());
+            comment.setUpdatedAt(data.getUpdatedAt());
+            comment.setAuthor(getUser(data.getUser().getUrl()));
+            comments.add(comment);
+        }
+        return comments;
+    }
+
+}

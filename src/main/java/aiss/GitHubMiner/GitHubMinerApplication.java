@@ -12,7 +12,9 @@ public class GitHubMinerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GitHubMinerApplication.class, args);
 	}
+
 	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {return builder.build();}
+	public RestTemplate restTemplate(RestTemplateBuilder builder) { return builder.build(); }
+
 
 }

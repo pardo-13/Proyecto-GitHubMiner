@@ -12,7 +12,7 @@
 	<artifactId>GitHubMiner</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>GitHubMiner</name>
-	<description>Miner de GitHub</description>
+	<description>GitMiner Application</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -53,12 +53,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>

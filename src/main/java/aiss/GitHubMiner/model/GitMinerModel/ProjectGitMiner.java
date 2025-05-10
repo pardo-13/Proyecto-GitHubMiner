@@ -1,43 +1,15 @@
 package aiss.GitHubMiner.model.GitMinerModel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.List;
-*/
-
-@Entity
-@Table(name = "Project")
 public class ProjectGitMiner {
 
-    @Id
-    @JsonProperty("id")
     public String id;
-
-    @JsonProperty("name")
-    @NotEmpty(message = "The name of the project cannot be empty")
     public String name;
-
-    @JsonProperty("web_url")
-    @NotEmpty(message = "The URL of the project cannot be empty")
     public String webUrl;
-    @JsonProperty("commits")
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "projectId")
     private List<CommitGitMiner> commitGitMiners;
-
-    @JsonProperty("issues")
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "projectId")
     private List<IssueGitMiner> issueGitMiners;
 
     public ProjectGitMiner() {

@@ -1,31 +1,19 @@
 package aiss.GitHubMiner.model.GitMinerModel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.persistence.*;
 
-/*
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-*/
-@Entity
-@Table(name = "GMUser")     // Watch out: User is a reserved keyword in H2
+
+// Watch out: User is a reserved keyword in H2
 public class UserGitMiner {
 
-    @Id
-    @JsonProperty("id")
+
     private String id;
-    @JsonProperty("username")
-    @NotEmpty(message = "The username cannot be empty")
     private String username;
-    @JsonProperty("avatar_url")
+    private String name;
     private String avatarUrl;
-    @JsonProperty("web_url")
     private String webUrl;
+
+    public UserGitMiner(){}
 
     public String getId() {
         return id;
@@ -43,7 +31,13 @@ public class UserGitMiner {
         this.username = username;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getAvatarUrl() {
         return avatarUrl;

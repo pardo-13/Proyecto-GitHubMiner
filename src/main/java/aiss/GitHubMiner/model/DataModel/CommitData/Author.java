@@ -1,23 +1,13 @@
 
-package aiss.GitHubMiner.model.DataModel.commit;
+package aiss.GitHubMiner.model.DataModel.CommitData;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "name",
-    "email",
-    "date"
-})
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Author {
 
     @JsonProperty("name")
@@ -26,8 +16,6 @@ public class Author {
     private String email;
     @JsonProperty("date")
     private String date;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     @JsonProperty("name")
     public String getName() {
@@ -37,11 +25,6 @@ public class Author {
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Author withName(String name) {
-        this.name = name;
-        return this;
     }
 
     @JsonProperty("email")
@@ -54,11 +37,6 @@ public class Author {
         this.email = email;
     }
 
-    public Author withEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
     @JsonProperty("date")
     public String getDate() {
         return date;
@@ -67,26 +45,6 @@ public class Author {
     @JsonProperty("date")
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public Author withDate(String date) {
-        this.date = date;
-        return this;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public Author withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-        return this;
     }
 
     @Override
@@ -104,10 +62,6 @@ public class Author {
         sb.append("date");
         sb.append('=');
         sb.append(((this.date == null)?"<null>":this.date));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
