@@ -1,20 +1,27 @@
 package aiss.GitHubMiner.model.GitMinerModel;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectGitMiner {
 
-    public String id;
-    public String name;
-    public String webUrl;
-    private List<CommitGitMiner> commitGitMiners;
-    private List<IssueGitMiner> issueGitMiners;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("web_url")
+    private String webUrl;
+    @JsonProperty("commits")
+    private List<CommitGitMiner> commits;
+    @JsonProperty("issues")
+    private List<IssueGitMiner> issues;
 
     public ProjectGitMiner() {
-        commitGitMiners = new ArrayList<>();
-        issueGitMiners = new ArrayList<>();
+        commits = new ArrayList<>();
+        issues = new ArrayList<>();
     }
 
     public String getId() {
@@ -42,19 +49,19 @@ public class ProjectGitMiner {
     }
 
     public List<CommitGitMiner> getCommits() {
-        return commitGitMiners;
+        return commits;
     }
 
     public void setCommits(List<CommitGitMiner> commitGitMiners) {
-        this.commitGitMiners = commitGitMiners;
+        this.commits = commitGitMiners;
     }
 
     public List<IssueGitMiner> getIssues() {
-        return issueGitMiners;
+        return issues;
     }
 
     public void setIssues(List<IssueGitMiner> issueGitMiners) {
-        this.issueGitMiners = issueGitMiners;
+        this.issues = issueGitMiners;
     }
 
     @Override
@@ -67,11 +74,11 @@ public class ProjectGitMiner {
         sb.append(',');
         sb.append("commits");
         sb.append('=');
-        sb.append(((this.commitGitMiners == null)?"<null>":this.commitGitMiners));
+        sb.append(((this.commits == null)?"<null>":this.commits));
         sb.append(',');
         sb.append("issues");
         sb.append('=');
-        sb.append(((this.issueGitMiners == null)?"<null>":this.issueGitMiners));
+        sb.append(((this.issues == null)?"<null>":this.issues));
         sb.append(',');
 
         if (sb.charAt((sb.length()- 1)) == ',') {

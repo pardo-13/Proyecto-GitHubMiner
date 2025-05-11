@@ -1,16 +1,21 @@
 package aiss.GitHubMiner.model.GitMinerModel;
 
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 // Watch out: User is a reserved keyword in H2
 public class UserGitMiner {
 
 
+    @JsonProperty("id")
     private String id;
+    @JsonProperty("username")
     private String username;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("avatar_url")
     private String avatarUrl;
+    @JsonProperty("web_url")
     private String webUrl;
 
     public UserGitMiner(){}

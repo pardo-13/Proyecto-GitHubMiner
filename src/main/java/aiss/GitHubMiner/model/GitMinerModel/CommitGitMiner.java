@@ -1,15 +1,23 @@
 package aiss.GitHubMiner.model.GitMinerModel;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CommitGitMiner {
 
+    @JsonProperty("id")
     private String id;
+    @JsonProperty("title")
     private String title;
+    @JsonProperty("message")
     private String message;
+    @JsonProperty("author_name")
     private String authorName;
+    @JsonProperty("author_email")
     private String authorEmail;
+    @JsonProperty("authored_date")
     private String authoredDate;
+    @JsonProperty("web_url")
     private String webUrl;
 
     public CommitGitMiner(){}

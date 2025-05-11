@@ -1,6 +1,6 @@
 package aiss.GitHubMiner.model.GitMinerModel;
 
-import aiss.GitHubMiner.model.DataModel.IssueData.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,22 +8,34 @@ import java.util.List;
 
 public class IssueGitMiner {
 
+    @JsonProperty("id")
     private String id;
+    @JsonProperty("title")
     private String title;
+    @JsonProperty("description")
     private String description;
+    @JsonProperty("state")
     private String state;
+    @JsonProperty("created_at")
     private String createdAt;
+    @JsonProperty("updated_at")
     private String updatedAt;
+    @JsonProperty("closed_at")
     private String closedAt;
+    @JsonProperty("labels")
     private List<String> labels;
-    private UserGitMiner author;
-    private UserGitMiner assignee;
+    @JsonProperty("votes")
     private Integer votes;
-    private List<CommentGitMiner> commentGitMiners;
+    @JsonProperty("comments")
+    private List<CommentGitMiner> comments;
+    @JsonProperty("author")
+    private UserGitMiner author;
+    @JsonProperty("assignee")
+    private UserGitMiner assignee;
 
     public IssueGitMiner(){
         this.labels = new ArrayList<>();
-        this.commentGitMiners = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public String getId() {
@@ -115,11 +127,11 @@ public class IssueGitMiner {
     }
 
     public List<CommentGitMiner> getComments() {
-        return commentGitMiners;
+        return comments;
     }
 
     public void setComments(List<CommentGitMiner> comments) {
-        this.commentGitMiners = comments;
+        this.comments = comments;
     }
 
     @Override
@@ -172,7 +184,7 @@ public class IssueGitMiner {
         sb.append(',');
         sb.append("comments");
         sb.append('=');
-        sb.append(((this.commentGitMiners == null) ? "<null>" : this.commentGitMiners));
+        sb.append(((this.comments == null) ? "<null>" : this.comments));
         sb.append(',');
 
         if (sb.charAt((sb.length() - 1)) == ',') {

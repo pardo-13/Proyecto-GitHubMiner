@@ -1,13 +1,20 @@
 
 package aiss.GitHubMiner.model.GitMinerModel;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CommentGitMiner {
 
+    @JsonProperty("id")
     private String id;
+    @JsonProperty("body")
     private String body;
-    private UserGitMiner author;
+    @JsonProperty("created_at")
     private String createdAt;
+    @JsonProperty("updated_at")
     private String updatedAt;
+    @JsonProperty("author")
+    private UserGitMiner author;
 
     public CommentGitMiner() {}
 
